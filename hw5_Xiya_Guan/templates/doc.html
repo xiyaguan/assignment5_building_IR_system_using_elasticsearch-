@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Ruohin hu">
+    <style>
+        body {
+            {#background-color: antiquewhite;#}
+            font-family: "Times New Roman";
+        }
+    </style>
+    <title> {{ doc.title }} </title>
+</head>
+<body text="#1B4F72">
+<div style="padding-top:0.7%;padding-bottom: 1%; text-align: center">
+    <h1 style="color:#1B4F72">Washington Post Search</h1>
+</div>
+<div style="text-align: center;">
+    <h3>{{ doc.title }}</h3>
+    <h4>Author: {{ doc.author }}</h4>
+    <h4>Date: {{ doc.date }}</h4>
+</div>
+<div style="padding-left: 2.6%; padding-right: 2.6%;">
+    <p style="line-height:2; text-align:justify;">  &nbsp &nbsp &nbsp {{ doc.content | safe }} </p>
+</div>
+</body>
+</html>

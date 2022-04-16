@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Ruohin hu">
+    <meta name="coauthor" content="Wangyong Lin, Yunjing Lee, Xiaoyu Lu">
+    <style>
+        body {
+            {#background-color: antiquewhite;#}
+            font-family: "Times New Roman";
+        }
+        a:link,a:visited{
+            text-decoration:none;
+        }
+        a:hover{
+            text-decoration:underline;
+        }
+    </style>
+    <script src="{{ url_for('static', filename='IFeelLucky.js') }}"></script>
+    <title>Washington Post Search</title>
+</head>
+<body text="#1B4F72">
+
+<div style="padding: 0.7% 52% 1% 14%;text-align: left;">
+    <h1 style="color:#1B4F72">Washington Post Search</h1>
+</div>
+
+<form action="{{ url_for('results') }}" name="search" method="post">
+    <div style="padding-top: 1%; padding-left: 10.4%; padding-right: 52%;text-align:left">
+    <label for="query">Query:</label>
+    <input type="text" id="query" name="query" size=50 value="{{ query_text }}">
+    <input type="text" id="query" name="keywords" size=40 {% if kw_text %}
+    value="{{ kw_text }}" {% else %} placeholder="Enter keywords here, separated by whitespaces"
+    {% endif %} >
+    <input type="submit" id="btn_search" value="Search"><button type="button" id="btn_lucky">I feel lucky!</button>
+
+    <br> <strong>Analyzer: </strong>
+    <input type="radio" name="options_analyzer" id="option1" value="standard_analyzer"
+            {% if option_analyzer=="standard_analyzer" %} checked="checked" {% endif %}> Standard analyzer </input>
+    <input type="radio" name="options_analyzer" id="option2" value="English_analyzer"
+            {% if option_analyzer=="English_analyzer" %}  {% endif %}> English analyzer </input>
+
+    <br> <strong>Embedding:</strong>
+    <input type="radio" name="options_embed" id="option1" value="bm25" {% if option_embed=="bm25" %}
+           checked="checked" {% endif %}> BM25 </input>
+    <input type="radio" name="options_embed" id="option2" value="ft_vector" {% if option_embed=="ft_vector" %}
+           checked="checked" {% endif %}> FastText </input>
+    <input type="radio" name="options_embed" id="option3" value="sbert_vector" {% if option_embed=="sbert_vector" %}
+           checked="checked" {% endif %}> Sentence Bert </input>
+    </div>
+</form>
+
+{% if show_rel %}
+<div style="padding-left: 10.4%">
+    805 Scores: AP-{{ score.ap|round(3) }}   Precision-{{ score.prec|round(3) }}   NDCG@{{ hits_num }}-{{ score.ndcg|round(3) }}
+</div>
+{% endif %}
+
+<h3 style="padding-left: 10.4%;">Total hits: {{ hits_num }}</h3>
+
+<div style="padding-left: 10.4%; padding-right: 52%">
+{% if page_id<page_num %}
+    {% for i in range((page_id-1)*DOC_PER_PAGE, page_id*DOC_PER_PAGE) %}
+        <h3 style = "margin-bottom:0.7%; margin-top: 2%">  <a href={{ url_for('doc_data',hit_idx=i) }}>
+            <strong>{{ items_list[i - (page_id-1)*DOC_PER_PAGE].title }}</strong> </a>
+            {% if show_rel %}
+                <span>[{{ items_list[i - (page_id-1)*DOC_PER_PAGE].annotation }}]</span>
+            {% endif %}
+        </h3>
+       <p style="margin-top:0.7%; margin-bottom: 2%; line-height:1; text-align:justify;">  {{ items_list[i - (page_id-1)*DOC_PER_PAGE].date }}&nbsp-&nbsp{{ contents[ids_list[i].meta.id] |safe|truncate(truncate_length) }} </p>
+    {% endfor %}
+{% else %}
+    {% for i in range((page_id-1)*DOC_PER_PAGE, hits_num) %}
+        <h3 style = "margin-bottom:0.35%">  <a href={{ url_for('doc_data',hit_idx=i) }}>
+            <strong>{{ items_list[i - (page_id-1)*DOC_PER_PAGE].title }}</strong> </a>
+            {% if show_rel %}
+                <span>[{{ items_list[i - (page_id-1)*DOC_PER_PAGE].annotation }}]</span>
+            {% endif %}
+        </h3>
+
+        <p style = "margin-top:0.35%; line-height:1; text-align:justify;">  {{ items_list[i - (page_id-1)*DOC_PER_PAGE].date }}&nbsp-&nbsp{{ contents[ids_list[i].meta.id] |safe|truncate(truncate_length) }} </p>
+    {% endfor %}
+{% endif %}
+</div>
+
+{% if page_id>1 %}
+    {% set new_page_id = page_id - 1 %}
+    <form style="float: left; padding-left: 10.4%;" action="{{ url_for('next_page', page_id=new_page_id) }}" method="post">
+        <input type="submit" value="Prev Page">
+    </form>
+{% endif %}
+{% if page_id<page_num %}
+    {% set new_page_id = page_id + 1 %}
+    <form style="float: right; padding-right: 52%;" action="{{ url_for('next_page', page_id=new_page_id) }}" method="post">
+        <input type="submit" value="Next Page">
+    </form>
+{% endif %}
+<br>
+<br>
+<br>
+
+</body>
+</html>

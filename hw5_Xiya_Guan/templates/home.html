@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <meta name="author" content="Ruohin hu">
+        <meta name="coauthor" content="Yunjing Lee">
+    <style>
+        body {
+            {#background-color: antiquewhite;#}
+            {#background-image: url({{ url_for('static', filename='test.jpg') }});#}
+            {#background-repeat:no-repeat;#}
+            {#background-position-x: -50px;#}
+            font-family: "Times New Roman";
+        }
+    </style>
+    <script src="{{ url_for('static', filename='IFeelLucky.js') }}"></script>
+    <title>Washington Post Search</title>
+</head>
+<body text="#1B4F72">
+
+<div style="padding-top:9%;padding-bottom: 1%; text-align: center">
+    <h1 style="color:#1B4F72">Washington Post Search</h1>
+</div>
+
+
+<form action="{{ url_for('results') }}" name="search" method="post">
+    <div style="padding-top: 1%; padding-left: 26.5%; text-align:left">
+    <label for="query">Query:</label>
+    <input type="text" id="query" name="query" size=50 placeholder="Enter query here">
+        <input type="text" id="query" name="keywords" size=40 placeholder="Enter keywords here, separated by whitespaces">
+    <input type="submit" id="btn_search" value="Search"><button type="button" id="btn_lucky">I feel lucky!</button>
+    <br> <strong> Analyzer: </strong>
+    <input type="radio" name="options_analyzer" id="option1" value="standard_analyzer"  checked="checked" > Standard analyzer </input>
+    <input type="radio" name="options_analyzer" id="option2" value="English_analyzer" > English analyzer </input>
+
+    <br> <strong> Embedding: </strong>
+    <input type="radio" name="options_embed" id="option1" value="bm25"  checked="checked" > BM25 </input>
+    <input type="radio" name="options_embed" id="option2" value="ft_vector" > FastText </input>
+    <input type="radio" name="options_embed" id="option3" value="sbert_vector" > Sentence Bert </input>
+
+    </div>
+</form>
+
+
+</body>
+</html>
