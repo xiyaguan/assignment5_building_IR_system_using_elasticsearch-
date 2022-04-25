@@ -78,7 +78,7 @@ data
 
 You can download ```wiki-news-300d-1M-subword.vec``` at [here](https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M-subword.vec.zip).
 
-[subset_wapo_50k_sbert_ft_lf_filtered.jl](https://drive.google.com/file/d/1h1LDoLRBgQgUJH5tbWuBlG-dparXy6f-/view?usp=sharing): JSON line file containing a subset of documents in TREC, including their sBERT, fastText, and Longformer vectors
+[subset_wapo_50k_sbert_ft_filtered.jl](https://drive.google.com/file/d/1h1LDoLRBgQgUJH5tbWuBlG-dparXy6f-/view?usp=sharing): JSON line file containing a subset of documents in TREC, including their sBERT, fastText, and Longformer vectors
 
 ### 4 Build Index
 
